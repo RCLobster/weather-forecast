@@ -1,0 +1,28 @@
+header {
+    text-align: center;
+}
+
+main {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.searchCard {
+    flex: 0 0 25%;
+    order: 1;
+}
+
+.historyCard {
+    flex: 0 0 25%;
+    order: 3;
+}
+
+.todayCard {
+    flex: 0 0 75%;
+    order: 2;
+}
+
+.forecastCard {
+    flex: 0 0 75%;
+    order: 4;
+}
