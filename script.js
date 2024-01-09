@@ -36,23 +36,46 @@ var forecastWeather = document.getElementById("fiveDayForecastParent");
 
 //API VARIABLES
 var key = "a4f7a3221af4f53e4523d3f11a44ccec";
-var lat;
-var long;
+//var lat;
+//var long;
+//var weatherUrl = "api.openweathermap.org/data/2.5/forecast?lat=" + stringLat + "&lon=" + stringLong + "&appid=" + key;
+
+
+function getWeatherData(lat, long) {
+    console.log(lat);
+    console.log(long);
+    //console.log(typeof long);
+    var stringLat = lat.toString();
+    var stringLong = long.toString();
+    var weatherUrl = "api.openweathermap.org/data/2.5/forecast?lat=" + stringLat + "&lon=" + stringLong + "&appid=" + key;
+
+    //console.log(weatherUrl);
+
+    fetch(weatherUrl).then(function (response){
+        response.json().then(function (data){
+            console.log(data);
+        })
+    })
+}
 
 function getLatLog(event) {
     event.preventDefault();
     //console.log(searchInput.value);
     var geoUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + searchInput.value + "&limit=1&appid=" + key;
-
+    
     fetch(geoUrl).then(function (response){
         response.json().then(function (data){
             console.log(data);
-            lat = data[0].lat;
-            console.log(lat);
-            long = data[0].lon;
-            console.log(long);
+            var lat = data[0].lat;
+            //console.log(lat);
+            var long = data[0].lon;
+            //console.log(long);
+            //getWeatherData(lat, long);
+
+            getWeatherData(lat, long);
         })
     })
+    
 }
 
 searchBtn.addEventListener("click", getLatLog);
