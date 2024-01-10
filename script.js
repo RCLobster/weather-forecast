@@ -15,12 +15,12 @@ THE PLAN
 3. using result of Geo API, do Weather API call to grab forecast data
 4. display today's weather data in .todayCard
     weather data to display:
-     -city name
-     -the date
+     ---city name
+     ---the date
      -an icon representation of weather conditions
-     -the temperature
-     -the humidity
-     -wind speed
+     ---the temperature
+     ---the humidity
+     ---wind speed
 5. display 5 day future forecast weather data in .forecastCard
 6. save current city search in localStorage
 7. display history in .historyCard as a button
@@ -36,10 +36,40 @@ var forecastWeather = document.getElementById("fiveDayForecastParent");
 
 //API VARIABLES
 var key = "a4f7a3221af4f53e4523d3f11a44ccec";
+var searchTerm;
 //var lat;
 //var long;
 //var weatherUrl = "api.openweathermap.org/data/2.5/forecast?lat=" + stringLat + "&lon=" + stringLong + "&appid=" + key;
 
+var today = dayjs();
+
+function displayData() {
+    //create elements for .todayCard
+    todayWeather.innerHTML = "";
+    var titleEl = document.createElement("h4");
+    titleEl.textContent = "Today " + today.format("MMM D, YYYY");
+
+    var iconEl = document.createElement("img");
+    //iconEl.setAttribute("src", icon data)
+
+    var tempEl = document.createElement("p");
+    //fill with data from fetch request
+    tempEl.textContent = "Temp: " + "74";
+
+    var humidityEl = document.createElement("p");
+    //fill with data from fetch request
+    humidityEl.textContent = "Humidity: " + "22%";
+
+    var windEl = document.createElement("p");
+    //fill with data from fetch request
+    windEl.textContent = "Wind Speed: " + "10" + " MPH";
+
+    todayWeather.appendChild(titleEl);
+    todayWeather.appendChild(iconEl);
+    todayWeather.appendChild(tempEl);
+    todayWeather.appendChild(humidityEl);
+    todayWeather.appendChild(windEl);
+}
 
 function getWeatherData(lat, long) {
     console.log(lat);
@@ -58,10 +88,9 @@ function getWeatherData(lat, long) {
     })
 }
 
-function getLatLog(event) {
-    event.preventDefault();
+function getLatLog() {
     //console.log(searchInput.value);
-    var geoUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + searchInput.value + "&limit=1&appid=" + key;
+    var geoUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + searchTerm + "&limit=1&appid=" + key;
     
     fetch(geoUrl).then(function (response){
         response.json().then(function (data){
@@ -78,4 +107,13 @@ function getLatLog(event) {
     
 }
 
-searchBtn.addEventListener("click", getLatLog);
+function getUserInput(event) {
+    event.preventDefault();
+
+    searchTerm = searchInput.value;
+    
+    getLatLog();
+    displayData();
+}
+
+searchBtn.addEventListener("click", getUserInput);

@@ -26,3 +26,8 @@ main {
     flex: 0 0 75%;
     order: 4;
 }
+
+#fiveDayForecastParent {
+    display: flex;
+    flex-wrap: wrap;
+}
