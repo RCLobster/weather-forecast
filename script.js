@@ -126,8 +126,9 @@ function displayForecastData(weatherData) {
 
     forecastWeather.innerHTML = "";
     for(var x=0; x < weatherData.list.length; x++){
+        //go through dt_txt at index [x] and grab the 12th and 13th character in the string
         var substringResult = weatherData.list[x].dt_txt.substring(11,13);
-
+        //check if the 12th and 13th character == "12", then run the loop with that index[x] data
         if(substringResult == "12"){
             var listEl = document.createElement("li");
             listEl.style.border = "2px solid black";
