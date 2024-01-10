@@ -32,6 +32,7 @@ var searchInput = document.getElementById("searchBar");
 var searchBtn = document.getElementById("searchBtn");
 var historyParent = document.getElementById("historyData");
 var todayWeather = document.getElementById("todayData");
+var currentCity = document.getElementById("currentCity");
 var forecastWeather = document.getElementById("fiveDayForecastParent");
 
 //API VARIABLES
@@ -88,9 +89,12 @@ historyParent.addEventListener("click", function(event){
     }
 })
 
-function displayTodayData(WeatherData) {
+function displayTodayData(weatherData) {
     //create elements for .todayCard
     todayWeather.innerHTML = "";
+
+    currentCity.textContent = weatherData.city.name;
+
     var titleEl = document.createElement("h4");
     titleEl.textContent = today.format("MMM D, YYYY");
 
@@ -122,7 +126,7 @@ function displayForecastData(weatherData) {
 
     forecastWeather.innerHTML = "";
     for(var x=0; x < weatherData.list.length; x++){
-        if(x%5 === 0){
+        if(x%8 === 0){
             var listEl = document.createElement("li");
             listEl.style.border = "2px solid black";
             listEl.style.listStyleType = "none";
