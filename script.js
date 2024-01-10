@@ -47,25 +47,28 @@ var daysOfForecast = [];
 
 
 //populate daysOfForecast[] with the current weeks days
-function addDaysOfWeek() {
-    for(i=0; i<5; i++) {
-        daysOfForecast.push(tomorrow.add(i, "day").format("MMM D, YYYY"));
-    }
-    console.log(daysOfForecast);
-    return(daysOfForecast);
-}
+// function addDaysOfWeek() {
+//     for(i=0; i<5; i++) {
+//         daysOfForecast.push(tomorrow.add(i, "day").format("MMM D, YYYY"));
+//     }
+//     //console.log(daysOfForecast);
+//     return(daysOfForecast);
+// }
 
 function displaySearchHistory() {
     historyParent.innerHTML = "";
 
     var historyToDisplay = JSON.parse(localStorage.getItem("searchHistory"));
+    if(historyToDisplay === null){
+        historyToDisplay = [];
+    }
 
     for(var x=0; x < historyToDisplay.length; x++) {
         var listEl = document.createElement("li");
         listEl.style.listStyleType = "arabic";
         var btnEl = document.createElement("button");
         btnEl.textContent = historyToDisplay[x];
-        btnEl.setAttribute("value", historyToDisplay[x]);
+        btnEl.setAttribute("data-value", historyToDisplay[x]);
         btnEl.style.margin = "5px";
 
         listEl.appendChild(btnEl);
@@ -73,7 +76,19 @@ function displaySearchHistory() {
     }
 }
 
-function displayTodayData() {
+historyParent.addEventListener("click", function(event){
+    if(event.target.matches("button")){
+        var city = event.target.getAttribute("data-value");
+
+        console.log(city);
+        getLatLog(city);
+        displaySearchHistory();
+        displayTodayData();
+        displayForecastData();
+    }
+})
+
+function displayTodayData(WeatherData) {
     //create elements for .todayCard
     todayWeather.innerHTML = "";
     var titleEl = document.createElement("h4");
@@ -102,11 +117,12 @@ function displayTodayData() {
 }
 
 //THE FOR LOOP IN HERE DOESN'T FIRE FOR SOME REASON
-function displayForecastData() {
+function displayForecastData(weatherData) {
     //create elements for .fiveDayForecastParent
 
     forecastWeather.innerHTML = "";
-    for(var x=0; x < daysOfForecast.length; x++){
+    for(var x=0; x < weatherData.list.length; x++){
+        if(x%8 === 0)
         var listEl = document.createElement("li");
         listEl.style.border = "2px solid black";
         listEl.style.listStyleType = "none";
@@ -114,7 +130,8 @@ function displayForecastData() {
         listEl.style.padding = "5px";
     
         var titleFiveEl = document.createElement("h4");
-        titleFiveEl.textContent = daysOfForecast[x]; 
+        var day = dayjs().format("MMM D, YYYY", weatherData.list[x].dt_txt);
+        titleFiveEl.textContent = day; 
 
         var iconFiveEl = document.createElement("img");
         //iconFiveEl.setAttribute("src", icon data)
@@ -125,11 +142,11 @@ function displayForecastData() {
     
         var humidityFiveEl = document.createElement("p");
         //fill with data from fetch request
-        humidityFiveEl.textContent = "Humidity: " + "22%";
+        humidityFiveEl.textContent = "Humidity: " + weatherData.list[x].main.humidity + "%";
     
         var windFiveEl = document.createElement("p");
         //fill with data from fetch request
-        windFiveEl.textContent = "Wind Speed: " + "10" + " MPH";
+        windFiveEl.textContent = "Wind Speed: " + weatherData.list[x].wind.speed + " MPH";
     
         listEl.appendChild(titleFiveEl);
         listEl.appendChild(iconFiveEl);
@@ -147,20 +164,22 @@ function getWeatherData(lat, long) {
     //console.log(typeof long);
     var stringLat = lat.toString();
     var stringLong = long.toString();
-    var weatherUrl = "api.openweathermap.org/data/2.5/forecast?lat=" + stringLat + "&lon=" + stringLong + "&appid=" + key;
+    var weatherUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + stringLat + "&lon=" + stringLong + "&appid=" + key;
 
     //console.log(weatherUrl);
 
     fetch(weatherUrl).then(function (response){
         response.json().then(function (data){
             console.log(data);
+            displayTodayData(data);
+            displayForecastData(data);
         })
     })
 }
 
-function getLatLog() {
+function getLatLog(cityName) {
     //console.log(searchInput.value);
-    var geoUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + searchTerm + "&limit=1&appid=" + key;
+    var geoUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&limit=1&appid=" + key;
     
     fetch(geoUrl).then(function (response){
         response.json().then(function (data){
@@ -199,7 +218,7 @@ function getUserInput(event) {
 
     //if the current search is already in localStorage, run the functions without saving it again
     if(searchToSave.includes(searchTerm)){
-        //getLatLog()
+        getLatLog(searchTerm)
         displaySearchHistory();
         displayTodayData();
         displayForecastData();
@@ -210,7 +229,7 @@ function getUserInput(event) {
     //re-save searchToSave[] into localStorage
     localStorage.setItem("searchHistory", JSON.stringify(searchToSave));
 
-    //getLatLog();
+    getLatLog(searchTerm);
     displaySearchHistory();
     displayTodayData();
     displayForecastData();
@@ -219,4 +238,4 @@ function getUserInput(event) {
 searchBtn.addEventListener("click", getUserInput);
 
 displaySearchHistory();
-addDaysOfWeek();
+//addDaysOfWeek();
