@@ -103,15 +103,15 @@ function displayTodayData(weatherData) {
 
     var tempEl = document.createElement("p");
     //fill with data from fetch request
-    tempEl.textContent = "Temp: " + "74";
+    tempEl.textContent = "Temp: " + Math.trunc(weatherData.list[0].main.temp) + "°F";
 
     var humidityEl = document.createElement("p");
     //fill with data from fetch request
-    humidityEl.textContent = "Humidity: " + "22%";
+    humidityEl.textContent = "Humidity: " + weatherData.list[0].main.humidity + "%";
 
     var windEl = document.createElement("p");
     //fill with data from fetch request
-    windEl.textContent = "Wind Speed: " + "10" + " MPH";
+    windEl.textContent = "Wind Speed: " + Math.trunc(weatherData.list[0].wind.speed) + " MPH";
 
     todayWeather.appendChild(titleEl);
     todayWeather.appendChild(iconEl);
@@ -140,7 +140,7 @@ function displayForecastData(weatherData) {
             titleFiveEl.textContent = day;
     
             var iconFiveEl = document.createElement("img");
-            //iconFiveEl.setAttribute("src", icon data)
+            //iconFiveEl.setAttribute("src", weatherData.list[x].weather[0].icon);
         
             var tempFiveEl = document.createElement("p");
             //fill with data from fetch request
