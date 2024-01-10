@@ -1,32 +1,3 @@
-/*
-GIVEN a weather dashboard with form inputs
-WHEN I search for a city
-THEN I am presented with current and future conditions for that city and that city is added to the search history
-WHEN I view current weather conditions for that city
-THEN I am presented with the city name, the date, an icon representation of weather conditions, the temperature, the humidity, and the wind speed
-WHEN I view future weather conditions for that city
-THEN I am presented with a 5-day forecast that displays the date, an icon representation of weather conditions, the temperature, the wind speed, and the humidity
-WHEN I click on a city in the search history
-THEN I am again presented with current and future conditions for that city
-
-THE PLAN
---1. Take in user input (city name)
---2. Geocoding API call to convert city name into lat and long coordinates
-3. using result of Geo API, do Weather API call to grab forecast data
-4. display today's weather data in .todayCard
-    weather data to display:
-     ---city name
-     ---the date
-     -an icon representation of weather conditions
-     ---the temperature
-     ---the humidity
-     ---wind speed
-5. display 5 day future forecast weather data in .forecastCard
-6. save current city search in localStorage
-7. display history in .historyCard as a button
-8. when history button is clicked, re-run a search using that city name
-*/
-
 //ELEMENT GRABS
 var searchInput = document.getElementById("searchBar");
 var searchBtn = document.getElementById("searchBtn");
@@ -38,23 +9,10 @@ var forecastWeather = document.getElementById("fiveDayForecastParent");
 //API VARIABLES
 var key = "a4f7a3221af4f53e4523d3f11a44ccec";
 var searchTerm;
-//var lat;
-//var long;
-//var weatherUrl = "api.openweathermap.org/data/2.5/forecast?lat=" + stringLat + "&lon=" + stringLong + "&appid=" + key;
 
 var today = dayjs();
 var tomorrow = dayjs().add(1, "day");
 var daysOfForecast = [];
-
-
-//populate daysOfForecast[] with the current weeks days
-// function addDaysOfWeek() {
-//     for(i=0; i<5; i++) {
-//         daysOfForecast.push(tomorrow.add(i, "day").format("MMM D, YYYY"));
-//     }
-//     //console.log(daysOfForecast);
-//     return(daysOfForecast);
-// }
 
 function onLoad() {
     getLatLog("Los Angeles");
@@ -64,13 +22,15 @@ function onLoad() {
 }
 
 function displaySearchHistory() {
+    //clear displayed history list
     historyParent.innerHTML = "";
-
+    //grab history from local storage
     var historyToDisplay = JSON.parse(localStorage.getItem("searchHistory"));
+    //if nothing is stored, set historyToDisplay to an empty []
     if(historyToDisplay === null){
         historyToDisplay = [];
     }
-
+    //create the list of past searches from localStorage array
     for(var x=0; x < historyToDisplay.length; x++) {
         var listEl = document.createElement("li");
         listEl.style.listStyleType = "arabic";
@@ -84,11 +44,15 @@ function displaySearchHistory() {
     }
 }
 
+//when a button in my search history is clicked...
 historyParent.addEventListener("click", function(event){
+    //check if what you click IS a button element
     if(event.target.matches("button")){
+        //if it IS a button, grab the "data-value" off THAT button and save to var city
         var city = event.target.getAttribute("data-value");
 
-        console.log(city);
+        //console.log(city);
+        //run all my display functions and pass city into getLatLog() to run an api call using the data from searchHistory
         getLatLog(city);
         displaySearchHistory();
         displayTodayData();
@@ -96,10 +60,11 @@ historyParent.addEventListener("click", function(event){
     }
 })
 
+//use the data from weatherAPI fetch to populate the webpage with relevant data
 function displayTodayData(weatherData) {
     //create elements for .todayCard
     todayWeather.innerHTML = "";
-
+    //update the title of today's forecast
     currentCity.textContent = weatherData.city.name;
 
     var titleEl = document.createElement("h4");
@@ -109,15 +74,15 @@ function displayTodayData(weatherData) {
     iconEl.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherData.list[0].weather[0].icon.replace("n", "d") + "@2x.png")
 
     var tempEl = document.createElement("p");
-    //fill with data from fetch request
+
     tempEl.textContent = "Temp: " + Math.trunc(weatherData.list[0].main.temp) + "°F";
 
     var humidityEl = document.createElement("p");
-    //fill with data from fetch request
+
     humidityEl.textContent = "Humidity: " + weatherData.list[0].main.humidity + "%";
 
     var windEl = document.createElement("p");
-    //fill with data from fetch request
+
     windEl.textContent = "Wind Speed: " + Math.trunc(weatherData.list[0].wind.speed) + " MPH";
 
     todayWeather.appendChild(titleEl);
@@ -127,11 +92,11 @@ function displayTodayData(weatherData) {
     todayWeather.appendChild(windEl);
 }
 
-//THE FOR LOOP IN HERE DOESN'T FIRE FOR SOME REASON
+//use the data from weatherAPI fetch to populate the webpage with relevant data
 function displayForecastData(weatherData) {
-    //create elements for .fiveDayForecastParent
-
+    //clear out whatever is currently displayed
     forecastWeather.innerHTML = "";
+    //create elements for .fiveDayForecastParent
     for(var x=0; x < weatherData.list.length; x++){
         //go through dt_txt at index [x] and grab the 12th and 13th character in the string
         var substringResult = weatherData.list[x].dt_txt.substring(11,13);
@@ -151,15 +116,15 @@ function displayForecastData(weatherData) {
             iconFiveEl.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherData.list[x].weather[0].icon.replace("n", "d") + "@2x.png");
         
             var tempFiveEl = document.createElement("p");
-            //fill with data from fetch request
+
             tempFiveEl.textContent = "Temp: " + Math.trunc(weatherData.list[x].main.temp) + "°F";
         
             var humidityFiveEl = document.createElement("p");
-            //fill with data from fetch request
+
             humidityFiveEl.textContent = "Humidity: " + weatherData.list[x].main.humidity + "%";
         
             var windFiveEl = document.createElement("p");
-            //fill with data from fetch request
+
             windFiveEl.textContent = "Wind Speed: " + Math.trunc(weatherData.list[x].wind.speed) + " MPH";
         
             listEl.appendChild(titleFiveEl);
@@ -171,9 +136,9 @@ function displayForecastData(weatherData) {
 
         }
     }
-    
 }
 
+//use data from getLatLong() to make a new fetch request to get weather data for a city with a specified lat and long value
 function getWeatherData(lat, long) {
     console.log(lat);
     console.log(long);
@@ -183,7 +148,7 @@ function getWeatherData(lat, long) {
     var weatherUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + stringLat + "&lon=" + stringLong + "&appid=" + key + "&units=imperial";
 
     //console.log(weatherUrl);
-
+    //take the data received from fetch and send it to my display functions
     fetch(weatherUrl).then(function (response){
         response.json().then(function (data){
             console.log(data);
@@ -193,6 +158,7 @@ function getWeatherData(lat, long) {
     })
 }
 
+//make a fetch request using the searched city name to grab the specific lat andn long coordinates of that city
 function getLatLog(cityName) {
     //console.log(searchInput.value);
     var geoUrl = "http://api.openweathermap.org/geo/1.0/direct?q=" + cityName + "&limit=1&appid=" + key;
@@ -205,19 +171,14 @@ function getLatLog(cityName) {
             var long = data[0].lon;
             //console.log(long);
             //getWeatherData(lat, long);
-
+            //send lat and long data up to make a new fetch request to weatherAPI using these lat and long coordinates
             getWeatherData(lat, long);
         })
     })
     
 }
 
-/*
-1. capture user input to var
-2. save the value of that var into localStorage
-3. create a button and set its val and text = to user input
-4. on click call fetch function
-*/
+//capture user input from search bar and use it to trigger fetch requests and data display functions
 function getUserInput(event) {
     event.preventDefault();
     searchTerm = searchInput.value;
@@ -251,8 +212,9 @@ function getUserInput(event) {
     displayForecastData();
 }
 
+//when the search button is clicked run my getUserInput()
 searchBtn.addEventListener("click", getUserInput);
 
+//run the two below functions on page load
 onLoad();
 displaySearchHistory();
-//addDaysOfWeek();
