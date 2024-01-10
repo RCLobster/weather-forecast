@@ -92,7 +92,7 @@ function displayTodayData(WeatherData) {
     //create elements for .todayCard
     todayWeather.innerHTML = "";
     var titleEl = document.createElement("h4");
-    titleEl.textContent = "Today " + today.format("MMM D, YYYY");
+    titleEl.textContent = today.format("MMM D, YYYY");
 
     var iconEl = document.createElement("img");
     //iconEl.setAttribute("src", icon data)
@@ -130,8 +130,8 @@ function displayForecastData(weatherData) {
             listEl.style.padding = "5px";
         
             var titleFiveEl = document.createElement("h4");
-            
-            titleFiveEl.textContent = weatherData.list[x].dt_txt;
+            var day = dayjs().format("MMM D, YYYY", weatherData.list[x].dt_txt);
+            titleFiveEl.textContent = day;
     
             var iconFiveEl = document.createElement("img");
             //iconFiveEl.setAttribute("src", icon data)
