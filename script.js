@@ -45,12 +45,14 @@ var today = dayjs();
 var tomorrow = dayjs().add(1, "day");
 var daysOfForecast = [];
 
+
 //populate daysOfForecast[] with the current weeks days
 function addDaysOfWeek() {
     for(i=0; i<5; i++) {
         daysOfForecast.push(tomorrow.add(i, "day").format("MMM D, YYYY"));
     }
-    //console.log(daysOfForecast);
+    console.log(daysOfForecast);
+    return(daysOfForecast);
 }
 
 
@@ -82,10 +84,13 @@ function displayTodayData() {
     todayWeather.appendChild(windEl);
 }
 
-function displayForecastData() {
+//THE FOR LOOP IN HERE DOESN'T FIRE FOR SOME REASON
+function displayForecastData(daysOfForecast) {
     //create elements for .fiveDayForecastParent
+    console.log(daysOfForecast);
+
     //forecastWeather.innerHTML = "";
-    for(x=0; x < daysOfForecast; x++){
+    for(x=0; x < daysOfForecast.length; x++){
         console.log("Loop started");
         var listEl = document.createElement("li");
     
