@@ -85,7 +85,7 @@ function displayTodayData() {
 }
 
 //THE FOR LOOP IN HERE DOESN'T FIRE FOR SOME REASON
-function displayForecastData(daysOfForecast) {
+function displayForecastData() {
     //create elements for .fiveDayForecastParent
     console.log(daysOfForecast);
 
