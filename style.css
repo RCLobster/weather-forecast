@@ -1,10 +1,31 @@
+
+
 header {
     text-align: center;
+    margin: 5px;
+    padding: 5px;
 }
 
 main {
     display: flex;
     flex-wrap: wrap;
+}
+
+h1,
+h2,
+h3,
+h4 {
+    margin: 5px;
+    padding: 8px;
+}
+
+p {
+    margin: 5px;
+    padding: 5px;
+}
+
+input {
+    padding: 5px;
 }
 
 .searchCard {
@@ -27,7 +48,13 @@ main {
     order: 4;
 }
 
-#fiveDayForecastParent {
+#todayData {
+    border: 2px solid black;
+    margin: 5px;
+    padding: 8px;
+}
+
+/* #fiveDayForecastParent {
     display: flex;
     flex-wrap: wrap;
-}
+} */

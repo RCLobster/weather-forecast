@@ -42,8 +42,19 @@ var searchTerm;
 //var weatherUrl = "api.openweathermap.org/data/2.5/forecast?lat=" + stringLat + "&lon=" + stringLong + "&appid=" + key;
 
 var today = dayjs();
+var tomorrow = dayjs().add(1, "day");
+var daysOfForecast = [];
 
-function displayData() {
+//populate daysOfForecast[] with the current weeks days
+function addDaysOfWeek() {
+    for(i=0; i<5; i++) {
+        daysOfForecast.push(tomorrow.add(i, "day").format("MMM D, YYYY"));
+    }
+    //console.log(daysOfForecast);
+}
+
+
+function displayTodayData() {
     //create elements for .todayCard
     todayWeather.innerHTML = "";
     var titleEl = document.createElement("h4");
@@ -69,6 +80,22 @@ function displayData() {
     todayWeather.appendChild(tempEl);
     todayWeather.appendChild(humidityEl);
     todayWeather.appendChild(windEl);
+}
+
+function displayForecastData() {
+    //create elements for .fiveDayForecastParent
+    //forecastWeather.innerHTML = "";
+    for(x=0; x < daysOfForecast; x++){
+        console.log("Loop started");
+        var listEl = document.createElement("li");
+    
+        var titleFiveEl = document.createElement("h4");
+        titleFiveEl.textContent = daysOfForecast[x]; 
+    
+        listEl.appendChild(titleFiveEl);
+        forecastWeather.appendChild(listEl);
+    }
+    
 }
 
 function getWeatherData(lat, long) {
@@ -112,8 +139,11 @@ function getUserInput(event) {
 
     searchTerm = searchInput.value;
     
-    getLatLog();
-    displayData();
+    //getLatLog();
+    displayTodayData();
+    displayForecastData();
 }
 
 searchBtn.addEventListener("click", getUserInput);
+
+addDaysOfWeek();
