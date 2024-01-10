@@ -87,17 +87,39 @@ function displayTodayData() {
 //THE FOR LOOP IN HERE DOESN'T FIRE FOR SOME REASON
 function displayForecastData() {
     //create elements for .fiveDayForecastParent
-    console.log(daysOfForecast);
 
-    //forecastWeather.innerHTML = "";
+    forecastWeather.innerHTML = "";
     for(x=0; x < daysOfForecast.length; x++){
         console.log("Loop started");
         var listEl = document.createElement("li");
+        listEl.style.border = "2px solid black";
+        listEl.style.listStyleType = "none";
+        listEl.style.margin = "5px";
+        listEl.style.padding = "5px";
     
         var titleFiveEl = document.createElement("h4");
         titleFiveEl.textContent = daysOfForecast[x]; 
+
+        var iconFiveEl = document.createElement("img");
+        //iconFiveEl.setAttribute("src", icon data)
+    
+        var tempFiveEl = document.createElement("p");
+        //fill with data from fetch request
+        tempFiveEl.textContent = "Temp: " + "74";
+    
+        var humidityFiveEl = document.createElement("p");
+        //fill with data from fetch request
+        humidityFiveEl.textContent = "Humidity: " + "22%";
+    
+        var windFiveEl = document.createElement("p");
+        //fill with data from fetch request
+        windFiveEl.textContent = "Wind Speed: " + "10" + " MPH";
     
         listEl.appendChild(titleFiveEl);
+        listEl.appendChild(iconFiveEl);
+        listEl.appendChild(tempFiveEl);
+        listEl.appendChild(humidityFiveEl);
+        listEl.appendChild(windFiveEl);
         forecastWeather.appendChild(listEl);
     }
     

@@ -54,7 +54,7 @@ input {
     padding: 8px;
 }
 
-/* #fiveDayForecastParent {
+#fiveDayForecastParent {
     display: flex;
     flex-wrap: wrap;
-} */
+}
