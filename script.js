@@ -126,7 +126,9 @@ function displayForecastData(weatherData) {
 
     forecastWeather.innerHTML = "";
     for(var x=0; x < weatherData.list.length; x++){
-        if(x%8 === 0){
+        var substringResult = weatherData.list[x].dt_txt.substring(11,13);
+
+        if(substringResult == "12"){
             var listEl = document.createElement("li");
             listEl.style.border = "2px solid black";
             listEl.style.listStyleType = "none";
@@ -134,7 +136,7 @@ function displayForecastData(weatherData) {
             listEl.style.padding = "5px";
         
             var titleFiveEl = document.createElement("h4");
-            var day = dayjs().format("MMM D, YYYY", weatherData.list[x].dt_txt);
+            var day = dayjs(weatherData.list[x].dt_txt).format("MMM D, YYYY");
             titleFiveEl.textContent = day;
     
             var iconFiveEl = document.createElement("img");
