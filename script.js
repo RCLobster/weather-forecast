@@ -55,6 +55,23 @@ function addDaysOfWeek() {
     return(daysOfForecast);
 }
 
+function displaySearchHistory() {
+    historyParent.innerHTML = "";
+
+    var historyToDisplay = JSON.parse(localStorage.getItem("searchHistory"));
+
+    for(var x=0; x < historyToDisplay.length; x++) {
+        var listEl = document.createElement("li");
+        listEl.style.listStyleType = "arabic";
+        var btnEl = document.createElement("button");
+        btnEl.textContent = historyToDisplay[x];
+        btnEl.setAttribute("value", historyToDisplay[x]);
+        btnEl.style.margin = "5px";
+
+        listEl.appendChild(btnEl);
+        historyParent.appendChild(listEl);
+    }
+}
 
 function displayTodayData() {
     //create elements for .todayCard
@@ -89,7 +106,7 @@ function displayForecastData() {
     //create elements for .fiveDayForecastParent
 
     forecastWeather.innerHTML = "";
-    for(x=0; x < daysOfForecast.length; x++){
+    for(var x=0; x < daysOfForecast.length; x++){
         console.log("Loop started");
         var listEl = document.createElement("li");
         listEl.style.border = "2px solid black";
@@ -161,16 +178,33 @@ function getLatLog() {
     
 }
 
+/*
+1. capture user input to var
+2. save the value of that var into localStorage
+3. create a button and set its val and text = to user input
+4. on click call fetch function
+*/
 function getUserInput(event) {
     event.preventDefault();
-
     searchTerm = searchInput.value;
-    
+    //grab whatever searches are saved in local storage
+    var searchToSave = JSON.parse(localStorage.getItem("searchHistory"));
+    //if nothing is saved, set array equal to an empty array
+    if (searchToSave === null){
+        searchToSave = [];
+    }
+    //push the currently searched item into searchToSave[]
+    searchToSave.push(searchTerm);
+    //re-save searchToSave[] into localStorage
+    localStorage.setItem("searchHistory", JSON.stringify(searchToSave));
+
     //getLatLog();
+    displaySearchHistory();
     displayTodayData();
     displayForecastData();
 }
 
 searchBtn.addEventListener("click", getUserInput);
 
+displaySearchHistory();
 addDaysOfWeek();
