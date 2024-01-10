@@ -107,7 +107,6 @@ function displayForecastData() {
 
     forecastWeather.innerHTML = "";
     for(var x=0; x < daysOfForecast.length; x++){
-        console.log("Loop started");
         var listEl = document.createElement("li");
         listEl.style.border = "2px solid black";
         listEl.style.listStyleType = "none";
@@ -187,11 +186,24 @@ function getLatLog() {
 function getUserInput(event) {
     event.preventDefault();
     searchTerm = searchInput.value;
+    //if the user searches with nothing in the search bar, don't save it to localStorage
+    if(searchTerm === ""){
+        return;
+    }
     //grab whatever searches are saved in local storage
     var searchToSave = JSON.parse(localStorage.getItem("searchHistory"));
     //if nothing is saved, set array equal to an empty array
     if (searchToSave === null){
         searchToSave = [];
+    }
+
+    //if the current search is already in localStorage, run the functions without saving it again
+    if(searchToSave.includes(searchTerm)){
+        //getLatLog()
+        displaySearchHistory();
+        displayTodayData();
+        displayForecastData();
+        return;
     }
     //push the currently searched item into searchToSave[]
     searchToSave.push(searchTerm);
