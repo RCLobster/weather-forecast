@@ -56,6 +56,13 @@ var daysOfForecast = [];
 //     return(daysOfForecast);
 // }
 
+function onLoad() {
+    getLatLog("Los Angeles");
+    displaySearchHistory();
+    displayTodayData();
+    displayForecastData();
+}
+
 function displaySearchHistory() {
     historyParent.innerHTML = "";
 
@@ -246,5 +253,6 @@ function getUserInput(event) {
 
 searchBtn.addEventListener("click", getUserInput);
 
+onLoad();
 displaySearchHistory();
 //addDaysOfWeek();
