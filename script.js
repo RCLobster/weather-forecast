@@ -122,38 +122,40 @@ function displayForecastData(weatherData) {
 
     forecastWeather.innerHTML = "";
     for(var x=0; x < weatherData.list.length; x++){
-        if(x%8 === 0)
-        var listEl = document.createElement("li");
-        listEl.style.border = "2px solid black";
-        listEl.style.listStyleType = "none";
-        listEl.style.margin = "5px";
-        listEl.style.padding = "5px";
+        if(x%5 === 0){
+            var listEl = document.createElement("li");
+            listEl.style.border = "2px solid black";
+            listEl.style.listStyleType = "none";
+            listEl.style.margin = "5px";
+            listEl.style.padding = "5px";
+        
+            var titleFiveEl = document.createElement("h4");
+            
+            titleFiveEl.textContent = weatherData.list[x].dt_txt;
     
-        var titleFiveEl = document.createElement("h4");
-        var day = dayjs().format("MMM D, YYYY", weatherData.list[x].dt_txt);
-        titleFiveEl.textContent = day; 
+            var iconFiveEl = document.createElement("img");
+            //iconFiveEl.setAttribute("src", icon data)
+        
+            var tempFiveEl = document.createElement("p");
+            //fill with data from fetch request
+            tempFiveEl.textContent = "Temp: " + Math.trunc(weatherData.list[x].main.temp) + "°F";
+        
+            var humidityFiveEl = document.createElement("p");
+            //fill with data from fetch request
+            humidityFiveEl.textContent = "Humidity: " + weatherData.list[x].main.humidity + "%";
+        
+            var windFiveEl = document.createElement("p");
+            //fill with data from fetch request
+            windFiveEl.textContent = "Wind Speed: " + Math.trunc(weatherData.list[x].wind.speed) + " MPH";
+        
+            listEl.appendChild(titleFiveEl);
+            listEl.appendChild(iconFiveEl);
+            listEl.appendChild(tempFiveEl);
+            listEl.appendChild(humidityFiveEl);
+            listEl.appendChild(windFiveEl);
+            forecastWeather.appendChild(listEl);
 
-        var iconFiveEl = document.createElement("img");
-        //iconFiveEl.setAttribute("src", icon data)
-    
-        var tempFiveEl = document.createElement("p");
-        //fill with data from fetch request
-        tempFiveEl.textContent = "Temp: " + "74";
-    
-        var humidityFiveEl = document.createElement("p");
-        //fill with data from fetch request
-        humidityFiveEl.textContent = "Humidity: " + weatherData.list[x].main.humidity + "%";
-    
-        var windFiveEl = document.createElement("p");
-        //fill with data from fetch request
-        windFiveEl.textContent = "Wind Speed: " + weatherData.list[x].wind.speed + " MPH";
-    
-        listEl.appendChild(titleFiveEl);
-        listEl.appendChild(iconFiveEl);
-        listEl.appendChild(tempFiveEl);
-        listEl.appendChild(humidityFiveEl);
-        listEl.appendChild(windFiveEl);
-        forecastWeather.appendChild(listEl);
+        }
     }
     
 }
@@ -164,7 +166,7 @@ function getWeatherData(lat, long) {
     //console.log(typeof long);
     var stringLat = lat.toString();
     var stringLong = long.toString();
-    var weatherUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + stringLat + "&lon=" + stringLong + "&appid=" + key;
+    var weatherUrl = "http://api.openweathermap.org/data/2.5/forecast?lat=" + stringLat + "&lon=" + stringLong + "&appid=" + key + "&units=imperial";
 
     //console.log(weatherUrl);
 
