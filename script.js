@@ -99,7 +99,7 @@ function displayTodayData(weatherData) {
     titleEl.textContent = today.format("MMM D, YYYY");
 
     var iconEl = document.createElement("img");
-    //iconEl.setAttribute("src", icon data)
+    iconEl.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherData.list[0].weather[0].icon.replace("n", "d") + "@2x.png")
 
     var tempEl = document.createElement("p");
     //fill with data from fetch request
@@ -141,7 +141,7 @@ function displayForecastData(weatherData) {
             titleFiveEl.textContent = day;
     
             var iconFiveEl = document.createElement("img");
-            //iconFiveEl.setAttribute("src", weatherData.list[x].weather[0].icon);
+            iconFiveEl.setAttribute("src", "https://openweathermap.org/img/wn/" + weatherData.list[x].weather[0].icon.replace("n", "d") + "@2x.png");
         
             var tempFiveEl = document.createElement("p");
             //fill with data from fetch request
