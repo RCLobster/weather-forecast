@@ -1,22 +1,25 @@
+*{
+    font-family: 'Roboto', sans-serif;
+    font-family: 'Rubik Broken Fax', system-ui;
+    font-family: 'Urbanist', sans-serif;
 
+}
+
+body {
+    background: linear-gradient(to bottom, white, #1DA9E4);
+    font-size: 125%;
+}
 
 header {
     text-align: center;
-    margin: 5px;
-    padding: 5px;
+    margin: 0px;
+    padding: 2px;
+    background-color: #42778E;
 }
 
 main {
     display: flex;
     flex-wrap: wrap;
-}
-
-h1,
-h2,
-h3,
-h4 {
-    margin: 5px;
-    padding: 8px;
 }
 
 p {
@@ -26,6 +29,10 @@ p {
 
 input {
     padding: 5px;
+}
+
+button {
+    padding: 5px 8px;
 }
 
 .searchCard {
